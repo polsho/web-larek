@@ -1,14 +1,15 @@
-import {View} from "./base/view";
-import {ensureElement} from "../utils/utils";
+import { View } from "./base/view";
+import { ensureElement } from "../utils/utils";
+import { ProductCategory } from "../types";
 
-type ProductCategory = 'софт-скил' | 'хард-скил' | 'кнопка' | 'дополнительно' | 'другое';
 
 interface ICardView {
+    id: string;
 	title: string;
 	about: string;
 	image: string;
-	price: number;
-	category: ProductCategory;
+	price: string;
+	category: string;
 }
 
 interface ICardActions {
@@ -17,21 +18,21 @@ interface ICardActions {
 
 export class Card extends View<ICardView> {
     protected _title: HTMLElement;
-    protected _category: HTMLElement;
-    protected _image: HTMLImageElement;
     protected _price: HTMLElement;
+    protected _category?: HTMLElement;
+    protected _image?: HTMLImageElement;
     protected _text?: HTMLElement;
     protected _button?: HTMLButtonElement;
 
-    constructor(container: HTMLElement, protected cardViewType: string, actions?: ICardActions) {  /* нужен ли аргумент cardViewType*/
+    constructor(container: HTMLElement, actions?: ICardActions) {  /* нужен ли аргумент cardViewType*/
         super(container);
 
-        this._title = ensureElement<HTMLElement>(`.${cardViewType}__title`, container);
-        this._category = ensureElement<HTMLElement>(`.${cardViewType}__category`, container);
-        this._image = ensureElement<HTMLImageElement>(`.${cardViewType}__image`, container);
-        this._price = ensureElement<HTMLElement>(`.${cardViewType}__price`, container);
-        this._text = container.querySelector(`.${cardViewType}__text`);
-        this._button = container.querySelector(`.${cardViewType}__button`);
+        this._title = ensureElement<HTMLElement>(`.card__title`, container);
+        this._price = ensureElement<HTMLElement>(`.card__price`, container);
+        this._category = ensureElement<HTMLElement>(`.card__category`, container);
+        this._image = ensureElement<HTMLImageElement>(`.card__image`, container);
+        this._text = container.querySelector(`.card__text`);
+        this._button = container.querySelector(`.card__button`);
 
         if (actions?.onClick) {
             if (this._button) {
@@ -41,6 +42,8 @@ export class Card extends View<ICardView> {
             }
         }
     }
+
+    /* сеттер для id */
 
     set title(value: string) {
         this.setText(this._title, value);
@@ -55,7 +58,7 @@ export class Card extends View<ICardView> {
     }
 
     set category(value: ProductCategory) {
-        this.setText(this._title, value);
+        this.setText(this._category, value);
     }
 
     set price (value: string) {

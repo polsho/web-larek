@@ -1,15 +1,5 @@
 import { Api, ApiListResponse } from "./base/api";
-
-type ProductCategory = 'софт-скил' | 'хард-скил' | 'кнопка' | 'дополнительно' | 'другое';
-
-interface IProduct {
-	id: string;
-	title: string;
-	description: string;
-	image: string;
-	price: number;
-	category: ProductCategory;
-}
+import { IProduct } from "../types";
 
 interface IGetProductApi {
     getProductList: () => Promise<IProduct[]>
