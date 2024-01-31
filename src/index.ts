@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 
-import { ensureElement, cloneTemplate } from './utils/utils';
+import { ensureElement, cloneTemplate, createElement } from './utils/utils';
 import { EventEmitter } from './components/base/events';
 import { GetProductApi } from './components/getProductApi';
 import { CDN_URL, API_URL } from './utils/constants';
@@ -9,6 +9,7 @@ import { AppData, ProductItem } from './components/appState';
 import { IProduct } from './types';
 import { Card } from './components/card';
 import { Modal } from './components/common/modal';
+import { Basket } from './components/common/basket';
 
 
 const successTemplate = ensureElement<HTMLTemplateElement>('#success');
@@ -19,15 +20,14 @@ const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
 const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 
-
 const events = new EventEmitter();
 const api = new GetProductApi(CDN_URL, API_URL);
 
-const page = new Page(document.body);
+const page = new Page(document.body, events);
 const appData = new AppData(events);
 
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
-// const basket = new Basket(cloneTemplate(basketTemplate), events);
+const basket = new Basket(cloneTemplate(basketTemplate), events);
 
 
 
@@ -41,7 +41,7 @@ events.on<IProduct>('items:changed', () => {
             title: item.title,
             image: item.image,
             about: item.description,
-            price: `${item.price} синапсов`,
+            price: item.price,
             category: item.category,
             id: item.id
         });
@@ -64,7 +64,7 @@ events.on('preview:changed', (item: ProductItem) => {
                 title: item.title,
                 image: item.image,
                 about: item.description,
-                price: `${item.price} синапсов`,
+                price: item.price,
                 category: item.category,
                 id: item.id
             })
@@ -83,6 +83,17 @@ events.on('preview:changed', (item: ProductItem) => {
     } else {
         modal.close();
     }
+});
+
+events.on('basket:open', () => {
+    modal.render({
+        content: createElement<HTMLElement>('div', {}, [
+            // tabs.render({
+            //     selected: 'closed'
+            // }),
+            basket.render()
+        ])
+    });
 });
 
 

@@ -1,14 +1,14 @@
 import { View } from "./base/view";
-import { ensureElement } from "../utils/utils";
-import { ProductCategory } from "../types";
+import { ensureElement, formatNumber } from "../utils/utils";
+import { ProductCategory, cardCategories } from "../types";
 
 
-interface ICardView {
+export interface ICardView {
     id: string;
 	title: string;
 	about: string;
 	image: string;
-	price: string;
+	price: number;
 	category: string;
 }
 
@@ -24,7 +24,7 @@ export class Card extends View<ICardView> {
     protected _text?: HTMLElement;
     protected _button?: HTMLButtonElement;
 
-    constructor(container: HTMLElement, actions?: ICardActions) {  /* нужен ли аргумент cardViewType*/
+    constructor(container: HTMLElement, actions?: ICardActions) {  
         super(container);
 
         this._title = ensureElement<HTMLElement>(`.card__title`, container);
@@ -33,6 +33,7 @@ export class Card extends View<ICardView> {
         this._image = ensureElement<HTMLImageElement>(`.card__image`, container);
         this._text = container.querySelector(`.card__text`);
         this._button = container.querySelector(`.card__button`);
+
 
         if (actions?.onClick) {
             if (this._button) {
@@ -59,10 +60,11 @@ export class Card extends View<ICardView> {
 
     set category(value: ProductCategory) {
         this.setText(this._category, value);
+        this._category.classList.add(cardCategories[value]);
     }
 
-    set price (value: string) {
-        this.setText(this._price, value);
+    set price (value: number) {
+        this.setText(this._price, value? `${formatNumber(value)} синапсов`: 'Бесценно');
     }
 
 }
