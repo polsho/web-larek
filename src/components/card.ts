@@ -6,7 +6,7 @@ import { ProductCategory, cardCategories } from "../types";
 export interface ICardView {
     id: string;
 	title: string;
-	about: string;
+	description: string;
 	image: string;
 	price: number;
 	category: string;
@@ -21,7 +21,7 @@ export class Card extends View<ICardView> {
     protected _price: HTMLElement;
     protected _category?: HTMLElement;
     protected _image?: HTMLImageElement;
-    protected _text?: HTMLElement;
+    protected _description?: HTMLElement;
     protected _button?: HTMLButtonElement;
 
     constructor(container: HTMLElement, actions?: ICardActions) {  
@@ -31,7 +31,7 @@ export class Card extends View<ICardView> {
         this._price = ensureElement<HTMLElement>(`.card__price`, container);
         this._image = container.querySelector(`.card__image`);
         this._category = container.querySelector(`.card__category`);
-        this._text = container.querySelector(`.card__text`);
+        this._description = container.querySelector(`.card__text`);
         this._button = container.querySelector(`.card__button`);
 
 
@@ -54,8 +54,8 @@ export class Card extends View<ICardView> {
         this.setImage(this._image, src, this.title);
     }
 
-    set about(value: string) {                       
-        this.setText(this._text, value);
+    set description(value: string) {                       
+        this.setText(this._description, value);
     }
 
     set category(value: ProductCategory) {

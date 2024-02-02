@@ -1,7 +1,8 @@
 import {IEvents} from "./base/events";
 import { IProduct, ProductCategory } from "../types";
+import { ICardView } from "./card";
 
-export class ProductItem {
+export class ProductItem implements IProduct{
     id: string;
 	title: string;
 	description: string;

@@ -40,7 +40,7 @@ events.on<IProduct>('items:changed', () => {
         return card.render({
             title: item.title,
             image: item.image,
-            about: item.description,
+            description: item.description,
             price: item.price,
             category: item.category,
             id: item.id
@@ -66,7 +66,7 @@ events.on('preview:changed', (item: ProductItem) => {
             content: card.render({
                 title: item.title,
                 image: item.image,
-                about: item.description,
+                description: item.description,
                 price: item.price,
                 category: item.category,
                 id: item.id
