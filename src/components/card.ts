@@ -29,8 +29,8 @@ export class Card extends View<ICardView> {
 
         this._title = ensureElement<HTMLElement>(`.card__title`, container);
         this._price = ensureElement<HTMLElement>(`.card__price`, container);
-        this._category = ensureElement<HTMLElement>(`.card__category`, container);
-        this._image = ensureElement<HTMLImageElement>(`.card__image`, container);
+        this._image = container.querySelector(`.card__image`);
+        this._category = container.querySelector(`.card__category`);
         this._text = container.querySelector(`.card__text`);
         this._button = container.querySelector(`.card__button`);
 
@@ -54,13 +54,13 @@ export class Card extends View<ICardView> {
         this.setImage(this._image, src, this.title);
     }
 
-    set about(value: string) {                        /* дописать возможность добавления массива строк при необходимости */
+    set about(value: string) {                       
         this.setText(this._text, value);
     }
 
     set category(value: ProductCategory) {
         this.setText(this._category, value);
-        this._category.classList.add(cardCategories[value]);
+        this._category?.classList.add(cardCategories[value]);
     }
 
     set price (value: number) {

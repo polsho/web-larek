@@ -17,10 +17,10 @@ export class ProductItem {
 export class AppData {
     catalog: ProductItem[];
     preview: string | null;
-    basket: string[];
+    basket: ProductItem[];
 
     constructor( protected events: IEvents) {
-        
+        this.basket = [];
     }
 
     setCatalog(items: IProduct[]) {
@@ -32,5 +32,11 @@ export class AppData {
         this.preview = item.id;
         this.events.emit('preview:changed', item);
     }
+
+    addToBasket(item: ProductItem) {
+        this.basket.push(item);
+    }
+
+
 
 }

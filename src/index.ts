@@ -52,13 +52,16 @@ events.on('card:select', (item: ProductItem) => {
     appData.setPreview(item);
 });
 
+events.on('product:order', (item: ProductItem) => {
+    appData.addToBasket(item);
+    page.counter = appData.basket.length;
+});
 
 events.on('preview:changed', (item: ProductItem) => {
     const showItem = (item: ProductItem) => {
         const card = new Card(cloneTemplate(cardPreviewTemplate), {
             onClick: () => events.emit('product:order', item)
         });
-        console.log(item);
         modal.render({
             content: card.render({
                 title: item.title,
@@ -86,6 +89,17 @@ events.on('preview:changed', (item: ProductItem) => {
 });
 
 events.on('basket:open', () => {
+
+    basket.items = appData.basket.map(item => {
+        const card = new Card(cloneTemplate(cardBasketTemplate), {
+            onClick: () => events.emit('card:delete', item)
+        });
+        return card.render({
+            title: item.title,
+            price: item.price,
+            id: item.id
+        });
+    })
     modal.render({
         content: createElement<HTMLElement>('div', {}, [
             // tabs.render({

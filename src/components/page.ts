@@ -40,4 +40,8 @@ export class Page extends View<IPage> {
         }
     }
 
+    set counter(value: number) {
+        this.setText(this._counter, String(value));
+    }
+
 }
