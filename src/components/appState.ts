@@ -1,6 +1,7 @@
 import {IEvents} from "./base/events";
 import { IProduct, ProductCategory } from "../types";
 import { ICardView } from "./card";
+import { IOrderForm } from "../types";
 
 export class ProductItem implements IProduct{
     id: string;
@@ -19,6 +20,11 @@ export class AppData {
     catalog: ProductItem[];
     preview: string | null;
     basket: ProductItem[];
+    totalPrice: number;
+    order: {
+        methodPayment: string;
+        address: string;
+    }
 
     constructor( protected events: IEvents) {
         this.basket = [];
@@ -26,18 +32,25 @@ export class AppData {
 
     setCatalog(items: IProduct[]) {
         this.catalog = items.map(item => new ProductItem(item, this.events));
-        this.events.emit('items:changed', { catalog: this.catalog });
+        this.events.emit('items:show', { catalog: this.catalog });
     }
 
     setPreview(item: ProductItem) {
         this.preview = item.id;
-        this.events.emit('preview:changed', item);
+        this.events.emit('preview:show', item);
     }
 
     addToBasket(item: ProductItem) {
         this.basket.push(item);
     }
 
+    deleteFromBasket(item: ProductItem) {
+
+    }
+
+    setOrderField(field: keyof IOrderForm, value: string) {
+
+    }
 
 
 }

@@ -18,3 +18,8 @@ export interface IProduct {
 	price: number;
 	category: ProductCategory;
 }
+
+export interface IOrderForm {
+    methodPayment: string;
+    address: string;
+}

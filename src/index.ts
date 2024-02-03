@@ -32,7 +32,7 @@ const basket = new Basket(cloneTemplate(basketTemplate), events);
 
 
 
-events.on<IProduct>('items:changed', () => {
+events.on<IProduct>('items:show', () => {
     page.catalog = appData.catalog.map(item => {
         const card = new Card(cloneTemplate(cardCatalogTemplate), {
             onClick: () => events.emit('card:select', item)
@@ -52,12 +52,12 @@ events.on('card:select', (item: ProductItem) => {
     appData.setPreview(item);
 });
 
-events.on('product:order', (item: ProductItem) => {
+events.on('product:order', (item: ProductItem) => {             /* должно происходить закрытие превью карточки */
     appData.addToBasket(item);
     page.counter = appData.basket.length;
 });
 
-events.on('preview:changed', (item: ProductItem) => {
+events.on('preview:show', (item: ProductItem) => {
     const showItem = (item: ProductItem) => {
         const card = new Card(cloneTemplate(cardPreviewTemplate), {
             onClick: () => events.emit('product:order', item)
