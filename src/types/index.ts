@@ -43,6 +43,11 @@ export interface IBasketView {
     selected: string[];
 }
 
+export interface IFormState {
+    valid: boolean;
+    errors: string[];
+}
+
 export interface IOrderForm {
 	methodPayment: string;
 	address: string;
