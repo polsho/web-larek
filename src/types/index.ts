@@ -19,7 +19,40 @@ export interface IProduct {
 	category: ProductCategory;
 }
 
+export interface IPage {
+	catalog: HTMLElement[];
+    locked: boolean;
+} 
+
+export interface IModalView {
+	content: HTMLElement;
+}
+
+export interface ICardView {
+	id: string;
+	title: string;
+	description: string;
+	image: string;
+	price: number;
+	category: string;
+}
+
+export interface IBasketView {
+	items: HTMLElement[];
+    total: number;   
+    selected: string[];
+}
+
 export interface IOrderForm {
-    methodPayment: string;
-    address: string;
+	methodPayment: string;
+	address: string;
+}
+
+export interface IContactsForm {
+	email: string;
+	phone: string;
+}
+
+export interface ISuccess {
+    total: number;
 }
