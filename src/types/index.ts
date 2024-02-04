@@ -28,15 +28,6 @@ export interface IModalView {
 	content: HTMLElement;
 }
 
-export interface ICardView {
-	id: string;
-	title: string;
-	description: string;
-	image: string;
-	price: number;
-	category: string;
-}
-
 export interface IBasketView {
 	items: HTMLElement[];
     total: number;   
@@ -55,4 +46,8 @@ export interface IContactsForm {
 
 export interface ISuccess {
     total: number;
+}
+
+export interface IOrder {
+	items: string[];
 }

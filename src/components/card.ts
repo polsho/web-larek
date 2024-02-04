@@ -1,22 +1,13 @@
 import { View } from "./base/view";
 import { ensureElement, formatNumber } from "../utils/utils";
 import { ProductCategory, cardCategories } from "../types";
-
-
-export interface ICardView {
-    id: string;
-	title: string;
-	description: string;
-	image: string;
-	price: number;
-	category: string;
-}
+import { IProduct } from "../types";
 
 interface ICardActions {
 	onClick: (event: MouseEvent) => void;
 }
 
-export class Card extends View<ICardView> {
+export class Card extends View<IProduct> {
     protected _title: HTMLElement;
     protected _price: HTMLElement;
     protected _category?: HTMLElement;

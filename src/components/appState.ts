@@ -1,7 +1,6 @@
 import {IEvents} from "./base/events";
 import { IProduct, ProductCategory } from "../types";
-import { ICardView } from "./card";
-import { IOrderForm } from "../types";
+import { IOrderForm, IOrder, IContactsForm } from "../types";
 
 export class ProductItem implements IProduct{
     id: string;
@@ -21,9 +20,12 @@ export class AppData {
     preview: string | null;
     basket: ProductItem[];
     totalPrice: number;
-    order: {
-        methodPayment: string;
-        address: string;
+    order: IOrder & IOrderForm & IContactsForm = {
+        methodPayment: '',
+        address: '',
+        email: '',
+        phone: '',
+        items: [],
     }
 
     constructor( protected events: IEvents) {
