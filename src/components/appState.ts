@@ -19,7 +19,7 @@ export class AppData {
     catalog: ProductItem[];
     preview: string | null;
     basket: ProductItem[];
-    totalPrice: number;
+    totalPrice: number = 0;
     order: IOrder & IOrderForm & IContactsForm = {
         methodPayment: '',
         address: '',
@@ -47,7 +47,11 @@ export class AppData {
     }
 
     deleteFromBasket(item: ProductItem) {
+        this.basket.splice(this.basket.findIndex(i => i.id === item.id), 1);
+    }
 
+    getTotal():number {
+        return this.basket.reduce((a, item) => a + item.price, 0);
     }
 
     setOrderField(field: keyof IOrderForm, value: string) {

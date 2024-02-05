@@ -1,6 +1,7 @@
 import { View } from "./base/view";
 import { ensureElement, formatNumber } from "../utils/utils";
-import { ProductCategory, cardCategories } from "../types";
+import { ProductCategory } from "../types";
+import { cardCategories } from "../utils/constants";
 import { IProduct } from "../types";
 
 interface ICardActions {

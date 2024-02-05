@@ -1,10 +1,10 @@
-import { ICardView } from "../card";
 import { View } from "../base/view";
 import { ensureElement, createElement, formatNumber } from "../../utils/utils";
 import { EventEmitter } from "../base/events";
+import { IProduct } from "../../types";
 
 
-type ICardBasket = Pick<ICardView, 'title' | 'price' >
+type ICardBasket = Pick<IProduct, 'title' | 'price' >
 
 interface IBasketView {
 	items: HTMLElement[];
@@ -23,6 +23,7 @@ export class Basket extends View<IBasketView> {
         this._list = ensureElement<HTMLElement>('.basket__list', this.container);
         this._total = this.container.querySelector('.basket__price');
         this._button = this.container.querySelector('.basket__button');
+        // basket__item-index
 
         if (this._button) {
             this._button.addEventListener('click', () => {
@@ -36,6 +37,7 @@ export class Basket extends View<IBasketView> {
     set items(items: HTMLElement[]) {
         if (items.length) {
             this._list.replaceChildren(...items);
+            items
         } else {
             this._list.replaceChildren(createElement<HTMLParagraphElement>('p', {
                 textContent: 'Корзина пуста'
@@ -52,6 +54,10 @@ export class Basket extends View<IBasketView> {
     // }
 
     set total(total: number) {
-        this.setText(this._total, formatNumber(total));
+        this.setText(this._total, `${formatNumber(total)} синапсов`);
     }
+
+//     render() {
+
+//     }
 }

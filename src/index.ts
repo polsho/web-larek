@@ -97,9 +97,11 @@ events.on('basket:open', () => {
         return card.render({
             title: item.title,
             price: item.price,
-            id: item.id
+            id: item.id,
+            
         });
-    })
+    });
+    basket.total = appData.getTotal();
     modal.render({
         content: createElement<HTMLElement>('div', {}, [
             // tabs.render({
