@@ -1,12 +1,7 @@
 import {View} from "./base/view";
 import {IEvents} from "./base/events";
 import {ensureElement} from "../utils/utils";
-
-
-interface IPage {
-    catalog: HTMLElement[];
-    locked: boolean;
-} 
+import { IPage } from "../types";
 
 
 export class Page extends View<IPage> {

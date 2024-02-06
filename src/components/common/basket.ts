@@ -1,16 +1,10 @@
 import { View } from "../base/view";
 import { ensureElement, createElement, formatNumber } from "../../utils/utils";
 import { EventEmitter } from "../base/events";
-import { IProduct } from "../../types";
+import { IBasketView } from "../../types";
 
 
-type ICardBasket = Pick<IProduct, 'title' | 'price' >
-
-interface IBasketView {
-	items: HTMLElement[];
-    total: number;   
-    selected: string[];
-}
+// type ICardBasket = Pick<IProduct, 'title' | 'price' >
 
 export class Basket extends View<IBasketView> {
     protected _list: HTMLElement;
@@ -37,27 +31,17 @@ export class Basket extends View<IBasketView> {
     set items(items: HTMLElement[]) {
         if (items.length) {
             this._list.replaceChildren(...items);
-            items
+            this.setDisabled(this._button, false);
         } else {
             this._list.replaceChildren(createElement<HTMLParagraphElement>('p', {
                 textContent: 'Корзина пуста'
             }));
+            this.setDisabled(this._button, true);
         }
     }
-
-    // set selected(items: string[]) {
-    //     if (items.length) {
-    //         this.setDisabled(this._button, false);
-    //     } else {
-    //         this.setDisabled(this._button, true);
-    //     }
-    // }
 
     set total(total: number) {
         this.setText(this._total, `${formatNumber(total)} синапсов`);
     }
 
-//     render() {
-
-//     }
 }

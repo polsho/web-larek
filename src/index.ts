@@ -2,14 +2,15 @@ import './scss/styles.scss';
 
 import { ensureElement, cloneTemplate, createElement } from './utils/utils';
 import { EventEmitter } from './components/base/events';
-import { GetProductApi } from './components/getProductApi';
+import { WebLarekApi } from './components/webLarekApi';
 import { CDN_URL, API_URL } from './utils/constants';
 import { Page } from './components/page';
 import { AppData, ProductItem } from './components/appState';
-import { IProduct } from './types';
+import { IProduct, IOrder, IOrderForm } from './types';
 import { Card } from './components/card';
 import { Modal } from './components/common/modal';
 import { Basket } from './components/common/basket';
+import { Order } from './components/order';
 
 
 const successTemplate = ensureElement<HTMLTemplateElement>('#success');
@@ -21,13 +22,14 @@ const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
 const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 
 const events = new EventEmitter();
-const api = new GetProductApi(CDN_URL, API_URL);
+const api = new WebLarekApi(CDN_URL, API_URL);
 
 const page = new Page(document.body, events);
 const appData = new AppData(events);
 
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const basket = new Basket(cloneTemplate(basketTemplate), events);
+const order = new Order(cloneTemplate(orderTemplate), events);
 
 
 
@@ -119,6 +121,26 @@ events.on('card:delete', (item: ProductItem) => {
     appData.deleteFromBasket(item);
     page.counter = appData.basket.length;
     events.emit('basket:open');
+})
+
+events.on('formErrors:change', (errors: Partial<IOrder>) => {
+    const { address, email, phone } = errors;
+    order.valid = !email && !phone && !address;
+    order.errors = Object.values({address, phone, email}).filter(i => !!i).join('; ');
+});
+
+events.on(/^order\..*:change/, (data: { field: keyof IOrderForm, value: string }) => {
+    appData.setOrderField(data.field, data.value);
+});
+
+events.on('order:open', () => {
+    modal.render({
+        content: order.render({
+            address: '',
+            valid: false,
+            errors: [],
+        })
+    })
 })
 
 

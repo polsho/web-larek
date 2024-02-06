@@ -1,11 +1,8 @@
 import { View } from "../base/view";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
+import { IModalView } from "../../types";
 
-
-interface IModalView {
-	content: HTMLElement;
-}
 
 export class Modal extends View<IModalView> {
     protected _closeButton: HTMLButtonElement;

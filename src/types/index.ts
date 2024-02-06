@@ -11,6 +11,16 @@ export interface IProduct {
 	category: ProductCategory;
 }
 
+export interface ICardActions {
+	onClick: (event: MouseEvent) => void;
+}
+
+export interface IWebLarekApi {
+    getProductList: () => Promise<IProduct[]>;
+    getProductInfo: (id: string) => Promise<IProduct>;
+	orderProducts: (order: IOrder) => Promise<IOrderResult>;
+}
+
 export interface IPage {
 	catalog: HTMLElement[];
     locked: boolean;
@@ -31,17 +41,16 @@ export interface IFormState {
     errors: string[];
 }
 
+export type FormErrors = Partial<Record<keyof IOrderForm, string>>;
+
 export interface IOrderForm {
 	methodPayment: string;
 	address: string;
-}
-
-export interface IContactsForm {
 	email: string;
 	phone: string;
 }
 
-export interface IOrder {
+export interface IOrder extends IOrderForm {
 	items: string[];
 }
 

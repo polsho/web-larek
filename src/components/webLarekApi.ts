@@ -1,12 +1,8 @@
 import { Api, ApiListResponse } from "./base/api";
-import { IProduct } from "../types";
+import { IOrder, IOrderResult, IProduct, IWebLarekApi } from "../types";
 
-interface IGetProductApi {
-    getProductList: () => Promise<IProduct[]>
-    getProductInfo: (id: string) => Promise<IProduct>
-}
 
-export class GetProductApi extends Api implements IGetProductApi {
+export class WebLarekApi extends Api implements IWebLarekApi {
     readonly cdn: string;
 
     constructor(cdn: string, baseUrl: string, options: RequestInit = {}) {
@@ -32,4 +28,6 @@ export class GetProductApi extends Api implements IGetProductApi {
             })
         );
     }
+
+    orderProducts: (order: IOrder) => Promise<IOrderResult>;
 }

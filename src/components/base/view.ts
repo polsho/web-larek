@@ -14,7 +14,7 @@ export abstract class View<T> {
         }
     }
 
-    setDisabled(element: HTMLElement, state: boolean) {
+    protected setDisabled(element: HTMLElement, state: boolean) {
         if (element) {
             if (state) element.setAttribute('disabled', 'disabled');
             else element.removeAttribute('disabled');
