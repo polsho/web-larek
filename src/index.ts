@@ -52,7 +52,7 @@ events.on('card:select', (item: ProductItem) => {
     appData.setPreview(item);
 });
 
-events.on('product:order', (item: ProductItem) => {             /* должно происходить закрытие превью карточки */
+events.on('product:order', (item: ProductItem) => {          
     appData.addToBasket(item);
     page.counter = appData.basket.length;
 });
@@ -60,7 +60,10 @@ events.on('product:order', (item: ProductItem) => {             /* должно 
 events.on('preview:show', (item: ProductItem) => {
     const showItem = (item: ProductItem) => {
         const card = new Card(cloneTemplate(cardPreviewTemplate), {
-            onClick: () => events.emit('product:order', item)
+            onClick: () => {
+                events.emit('product:order', item);
+                modal.close();
+            }
         });
         modal.render({
             content: card.render({
@@ -111,6 +114,12 @@ events.on('basket:open', () => {
         ])
     });
 });
+
+events.on('card:delete', (item: ProductItem) => {
+    appData.deleteFromBasket(item);
+    page.counter = appData.basket.length;
+    events.emit('basket:open');
+})
 
 
 events.on('modal:open', () => {
