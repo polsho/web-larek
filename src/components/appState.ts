@@ -55,25 +55,30 @@ export class AppData {
         return this.basket.reduce((a, item) => a + item.price, 0);
     }
 
-    setOrderField(field: keyof IOrderForm, value: string) {
+    setOrderField(field: keyof IOrderForm, value: string, isContactsForm: boolean) {
         this.order[field] = value;
 
-        if (this.validateOrder()) {
+        if (this.validateOrder(isContactsForm)) {
             this.events.emit('order:ready', this.order);
         }
     }
 
-    validateOrder() {
+    validateOrder(isContactsForm: boolean) {
         const errors: typeof this.formErrors = {};
+        if (!this.order.methodPayment) {
+            errors.address = 'Необходимо выбрать метод оплаты';
+        }
         if (!this.order.address) {
             errors.address = 'Необходимо указать адрес';
         }
-        // if (!this.order.email) {
-        //     errors.email = 'Необходимо указать email';
-        // }
-        // if (!this.order.phone) {
-        //     errors.phone = 'Необходимо указать телефон';
-        // }
+        if (isContactsForm) {
+            if (!this.order.email) {
+                errors.email = 'Необходимо указать email';
+            }
+            if (!this.order.phone) {
+                errors.phone = 'Необходимо указать телефон';
+            }
+        }
         this.formErrors = errors;
         this.events.emit('formErrors:change', this.formErrors);
         return Object.keys(errors).length === 0;

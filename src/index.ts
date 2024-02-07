@@ -11,6 +11,7 @@ import { Card } from './components/card';
 import { Modal } from './components/common/modal';
 import { Basket } from './components/common/basket';
 import { Order } from './components/order';
+import { Contacts } from './components/contacts';
 
 
 const successTemplate = ensureElement<HTMLTemplateElement>('#success');
@@ -30,7 +31,7 @@ const appData = new AppData(events);
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const basket = new Basket(cloneTemplate(basketTemplate), events);
 const order = new Order(cloneTemplate(orderTemplate), events);
-
+const contacts = new Contacts(cloneTemplate(contactsTemplate), events);
 
 
 
@@ -123,20 +124,37 @@ events.on('card:delete', (item: ProductItem) => {
     events.emit('basket:open');
 })
 
-events.on('formErrors:change', (errors: Partial<IOrder>) => {
-    const { address, email, phone } = errors;
-    order.valid = !email && !phone && !address;
-    order.errors = Object.values({address, phone, email}).filter(i => !!i).join('; ');
+events.on('formErrors:change', ({methodPayment, address, email, phone}: Partial<IOrder>) => {
+    order.valid = !methodPayment && !address;
+    contacts.valid = !email && !phone;
+    order.errors = Object.values({methodPayment, address}).filter(i => !!i).join('; ');
+    contacts.errors = Object.values({email, phone}).filter(i => !!i).join('; ');
 });
 
 events.on(/^order\..*:change/, (data: { field: keyof IOrderForm, value: string }) => {
-    appData.setOrderField(data.field, data.value);
+    appData.setOrderField(data.field, data.value, false);
+});
+
+events.on(/^contacts\..*:change/, (data: { field: keyof IOrderForm, value: string }) => {
+    appData.setOrderField(data.field, data.value, true);
 });
 
 events.on('order:open', () => {
     modal.render({
         content: order.render({
+            methodPayment: '',
             address: '',
+            valid: false,
+            errors: [],
+        })
+    })
+})
+
+events.on('order:submit', () => {
+    modal.render({
+        content: contacts.render({
+            email: '',
+            phone: '',
             valid: false,
             errors: [],
         })
