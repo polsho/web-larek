@@ -4,7 +4,7 @@ import { IEvents } from "./base/events";
 import { ensureAllElements } from "../utils/utils";
 
 
-export class Order extends Form<Pick<IOrder, 'methodPayment' | 'address'>> {
+export class Order extends Form<Pick<IOrder, 'payment' | 'address'>> {
     protected _methodButtons: HTMLButtonElement[];
     protected methodPayment: string;
 
@@ -16,7 +16,7 @@ export class Order extends Form<Pick<IOrder, 'methodPayment' | 'address'>> {
 
             btn.addEventListener('click', () => {
                 this.selectmethodPayment(btn);
-                this.onInputChange('methodPayment', btn.name);
+                this.onInputChange('payment', btn.name);
             });
         })
             

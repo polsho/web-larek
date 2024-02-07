@@ -22,7 +22,6 @@ export class Card extends View<IProduct> {
         this._description = container.querySelector(`.card__text`);
         this._button = container.querySelector(`.card__button`);
 
-
         if (actions?.onClick) {
             if (this._button) {
                 this._button.addEventListener('click', actions.onClick);
@@ -53,6 +52,14 @@ export class Card extends View<IProduct> {
 
     set price (value: number) {
         this.setText(this._price, value? `${formatNumber(value)} синапсов`: 'Бесценно');
+    }
+
+    render(data?: Partial<IProduct>): HTMLElement {
+        Object.assign(this as object, data ?? {});
+        if (!data.price) {
+            this.setDisabled(this._button, true);
+        }
+        return this.container;
     }
 
 }

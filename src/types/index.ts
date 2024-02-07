@@ -44,13 +44,14 @@ export interface IFormState {
 export type FormErrors = Partial<Record<keyof IOrderForm, string>>;
 
 export interface IOrderForm {
-	methodPayment: string;
+	payment: string;
 	address: string;
 	email: string;
 	phone: string;
 }
 
 export interface IOrder extends IOrderForm {
+	total: number;
 	items: string[];
 }
 

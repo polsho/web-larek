@@ -19,12 +19,12 @@ export class AppData {
     catalog: ProductItem[];
     preview: string | null;
     basket: ProductItem[];
-    totalPrice: number = 0;
     order: IOrder = {
-        methodPayment: '',
+        payment: '',
         address: '',
         email: '',
         phone: '',
+        total: 0,
         items: [],
     }
     formErrors: FormErrors;
@@ -65,7 +65,7 @@ export class AppData {
 
     validateOrder(isContactsForm: boolean) {
         const errors: typeof this.formErrors = {};
-        if (!this.order.methodPayment) {
+        if (!this.order.payment) {
             errors.address = 'Необходимо выбрать метод оплаты';
         }
         if (!this.order.address) {

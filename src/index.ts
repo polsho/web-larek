@@ -12,6 +12,7 @@ import { Modal } from './components/common/modal';
 import { Basket } from './components/common/basket';
 import { Order } from './components/order';
 import { Contacts } from './components/contacts';
+import { Success } from './components/common/success';
 
 
 const successTemplate = ensureElement<HTMLTemplateElement>('#success');
@@ -124,10 +125,10 @@ events.on('card:delete', (item: ProductItem) => {
     events.emit('basket:open');
 })
 
-events.on('formErrors:change', ({methodPayment, address, email, phone}: Partial<IOrder>) => {
-    order.valid = !methodPayment && !address;
+events.on('formErrors:change', ({payment, address, email, phone}: Partial<IOrder>) => {
+    order.valid = !payment && !address;
     contacts.valid = !email && !phone;
-    order.errors = Object.values({methodPayment, address}).filter(i => !!i).join('; ');
+    order.errors = Object.values({payment, address}).filter(i => !!i).join('; ');
     contacts.errors = Object.values({email, phone}).filter(i => !!i).join('; ');
 });
 
@@ -142,7 +143,7 @@ events.on(/^contacts\..*:change/, (data: { field: keyof IOrderForm, value: strin
 events.on('order:open', () => {
     modal.render({
         content: order.render({
-            methodPayment: '',
+            payment: '',
             address: '',
             valid: false,
             errors: [],
@@ -159,6 +160,28 @@ events.on('order:submit', () => {
             errors: [],
         })
     })
+})
+
+events.on('contacts:submit', () => {
+    api.orderProducts(appData.order)
+        .then((result) => {
+            const success = new Success(cloneTemplate(successTemplate), {
+                onClick: () => {
+                    
+                    console.log('contacts:submit');
+                    modal.close();
+                    // appData.clearBasket();
+                    // events.emit('auction:changed');
+                }
+            });
+
+            modal.render({
+                content: success.render({})
+            });
+        })
+        .catch(err => {
+            console.error(err);
+        });
 })
 
 
