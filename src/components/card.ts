@@ -22,7 +22,7 @@ export class Card extends View<IProduct> {
         this._category = container.querySelector(`.card__category`);
         this._description = container.querySelector(`.card__text`);
         this._button = container.querySelector(`.card__button`);
-        this._index = container.querySelector('.basket__card-index');
+        this._index = container.querySelector('.basket__item-index');
 
         if (actions?.onClick) {
             if (this._button) {
