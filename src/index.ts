@@ -101,7 +101,9 @@ events.on('basket:open', () => {
         const card = new Card(cloneTemplate(cardBasketTemplate), {
             onClick: () => events.emit('card:delete', item)
         });
+        let index: number = 0;
         return card.render({
+            index: index++,
             title: item.title,
             price: item.price,
             id: item.id,
