@@ -141,6 +141,10 @@ events.on(/^contacts\..*:change/, (data: { field: keyof IOrderForm, value: strin
 });
 
 events.on('order:open', () => {
+    appData.order.total = appData.getTotal();
+    appData.order.items = appData.basket.map((item) => {
+        item.id;
+    });
     modal.render({
         content: order.render({
             payment: '',
