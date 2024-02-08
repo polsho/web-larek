@@ -2,7 +2,7 @@ import {IEvents} from "./base/events";
 import { IProduct, ProductCategory } from "../types";
 import { IOrderForm, IOrder, FormErrors } from "../types";
 
-export class ProductItem implements IProduct{
+export class ProductItem implements Omit<IProduct, 'index'>{
     id: string;
 	title: string;
 	description: string;
@@ -51,6 +51,15 @@ export class AppData {
         this.basket.splice(this.basket.findIndex(i => i.id === item.id), 1);
     }
 
+    clearBasket() {
+        this.basket = [];
+    }
+
+    clearOrder() {
+        this.order.items = [];
+        
+    }
+
     getTotal():number {
         return this.basket.reduce((a, item) => a + item.price, 0);
     }
@@ -83,6 +92,5 @@ export class AppData {
         this.events.emit('formErrors:change', this.formErrors);
         return Object.keys(errors).length === 0;
     }
-
 
 }

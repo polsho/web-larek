@@ -52,8 +52,12 @@ export class Card extends View<IProduct> {
         this._category?.classList.add(cardCategories[value]);
     }
 
-    set price (value: number) {
+    set price(value: number) {
         this.setText(this._price, value? `${formatNumber(value)} синапсов`: 'Бесценно');
+    }
+
+    set index(value: number) {
+        this.setText(this._index, value);
     }
 
     render(data?: Partial<IProduct>): HTMLElement {

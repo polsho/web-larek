@@ -24,7 +24,7 @@ export class Success extends View<ISuccess> {
         }
     }
 
-    setTotal(value: number) {
+    set total(value: number) {
         this._total.textContent = `Списано ${formatNumber(value)} синапсов`;
     }
 }

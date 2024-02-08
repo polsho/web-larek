@@ -6,7 +6,6 @@ import { ensureAllElements } from "../utils/utils";
 
 export class Order extends Form<Pick<IOrder, 'payment' | 'address'>> {
     protected _methodButtons: HTMLButtonElement[];
-    protected methodPayment: string;
 
     constructor(container: HTMLFormElement, events: IEvents) {
         super(container, events);
@@ -15,22 +14,30 @@ export class Order extends Form<Pick<IOrder, 'payment' | 'address'>> {
         this._methodButtons.forEach((btn) => {
 
             btn.addEventListener('click', () => {
-                this.selectmethodPayment(btn);
+                this.selectPayment(btn);
                 this.onInputChange('payment', btn.name);
             });
         })
             
     }
 
-    selectmethodPayment(button: HTMLButtonElement) {
-        this._methodButtons.forEach((btn) => {
-            btn.classList.remove('button_alt-active')
-        })
+    selectPayment(button: HTMLButtonElement) {
+        this.resetPayment();
         button.classList.add('button_alt-active');
     }
 
+    resetPayment() {
+        this._methodButtons.forEach((btn) => {
+            btn.classList.remove('button_alt-active')
+        })
+    }
 
     set address(value: string) {
         (this.container.elements.namedItem('address') as HTMLInputElement).value = value;
     }
+
+    // render(state: Pick<IOrder, 'payment' | 'address'> & IFormState) {
+    //     this.resetPayment();
+    //     return this.super(state);
+    // }
 }

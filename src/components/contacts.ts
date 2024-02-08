@@ -1,9 +1,9 @@
 import { Form } from "./common/form";
-import { IOrder } from "../types";
+import { IOrderForm } from "../types";
 import { IEvents } from "./base/events";
 
 
-export class Contacts extends Form<Pick<IOrder, 'email' | 'phone'>> {
+export class Contacts extends Form<Pick<IOrderForm, 'email' | 'phone'>> {
     constructor(container: HTMLFormElement, events: IEvents) {
         super(container, events);
     }

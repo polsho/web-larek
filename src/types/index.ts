@@ -9,6 +9,7 @@ export interface IProduct {
 	image: string;
 	price: number | null;
 	category: ProductCategory;
+	index: number;
 }
 
 export interface ICardActions {

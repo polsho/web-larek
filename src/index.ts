@@ -96,14 +96,13 @@ events.on('preview:show', (item: ProductItem) => {
 });
 
 events.on('basket:open', () => {
-
+    let index: number = 0;
     basket.items = appData.basket.map(item => {
         const card = new Card(cloneTemplate(cardBasketTemplate), {
             onClick: () => events.emit('card:delete', item)
         });
-        let index: number = 0;
         return card.render({
-            index: index++,
+            index: ++index,
             title: item.title,
             price: item.price,
             id: item.id,
@@ -145,7 +144,7 @@ events.on(/^contacts\..*:change/, (data: { field: keyof IOrderForm, value: strin
 events.on('order:open', () => {
     appData.order.total = appData.getTotal();
     appData.order.items = appData.basket.map((item) => {
-        item.id;
+        return item.id;
     });
     modal.render({
         content: order.render({
@@ -173,16 +172,16 @@ events.on('contacts:submit', () => {
         .then((result) => {
             const success = new Success(cloneTemplate(successTemplate), {
                 onClick: () => {
-                    
-                    console.log('contacts:submit');
                     modal.close();
-                    // appData.clearBasket();
-                    // events.emit('auction:changed');
+                    appData.clearBasket();
+                    page.counter = 0;
                 }
             });
 
             modal.render({
-                content: success.render({})
+                content: success.render({
+                    total: result.total,
+                })
             });
         })
         .catch(err => {
