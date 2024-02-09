@@ -36,8 +36,8 @@ export class Order extends Form<Pick<IOrder, 'payment' | 'address'>> {
         (this.container.elements.namedItem('address') as HTMLInputElement).value = value;
     }
 
-    // render(state: Pick<IOrder, 'payment' | 'address'> & IFormState) {
-    //     this.resetPayment();
-    //     return this.super(state);
-    // }
+    render(state: Pick<IOrder, 'payment' | 'address'> & IFormState) {
+        this.resetPayment();
+        return super.render(state);
+    }
 }
