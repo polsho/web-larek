@@ -33,8 +33,6 @@ export class Card extends View<IProduct> {
         }
     }
 
-    /* сеттер для id */
-
     set title(value: string) {
         this.setText(this._title, value);
     }

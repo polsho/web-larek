@@ -4,8 +4,6 @@ import { EventEmitter } from "../base/events";
 import { IBasketView } from "../../types";
 
 
-// type ICardBasket = Pick<IProduct, 'title' | 'price' >
-
 export class Basket extends View<IBasketView> {
     protected _list: HTMLElement;
     protected _total: HTMLElement;
@@ -17,7 +15,6 @@ export class Basket extends View<IBasketView> {
         this._list = ensureElement<HTMLElement>('.basket__list', this.container);
         this._total = this.container.querySelector('.basket__price');
         this._button = this.container.querySelector('.basket__button');
-        // basket__item-index
 
         if (this._button) {
             this._button.addEventListener('click', () => {

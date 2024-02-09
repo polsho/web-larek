@@ -56,44 +56,37 @@ export class AppData {
     }
 
     clearOrder() {
-        Object.keys(this.order).forEach((key) => {
-		if (typeof key === 'number') {
-			this.order[key] = 0;
-		} else if (Array.isArray(key)) {
-			this.order[key] = [];
-		} else {
-			this.order[key] = '';
-		}
-	})
+        this.order.payment = '';
+        this.order.address = '';
+        this.order.email = '';
+        this.order.phone = '';
+        this.order.total = 0;
+        this.order.items = [];
     }
 
     getTotal():number {
         return this.basket.reduce((a, item) => a + item.price, 0);
     }
 
-    setOrderField(field: keyof IOrderForm, value: string, isContactsForm: boolean) {
+    setOrderField(field: keyof IOrderForm, value: string) {
         this.order[field] = value;
 
-        if (this.validateOrder(isContactsForm)) {
-            this.events.emit('order:ready', this.order);
-        }
+        this.validateOrder();
     }
 
-    validateOrder(isContactsForm: boolean) {
+    validateOrder() {
         const errors: typeof this.formErrors = {};
         if (!this.order.payment) {
-            errors.address = 'Необходимо выбрать метод оплаты';
+            errors.payment = 'Необходимо выбрать метод оплаты';
         }
         if (!this.order.address) {
             errors.address = 'Необходимо указать адрес';
         }
-        if (isContactsForm) {
-            if (!this.order.email) {
-                errors.email = 'Необходимо указать email';
-            }
-            if (!this.order.phone) {
-                errors.phone = 'Необходимо указать телефон';
-            }
+        if (!this.order.email) {
+            errors.email = 'Необходимо указать email';
+        }
+        if (!this.order.phone) {
+            errors.phone = 'Необходимо указать телефон';
         }
         this.formErrors = errors;
         this.events.emit('formErrors:change', this.formErrors);

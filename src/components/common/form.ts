@@ -28,7 +28,7 @@ export class Form<T> extends View<IFormState> {
     }
 
     protected onInputChange(field: keyof T, value: string) {
-        this.events.emit(`${this.container.name}.${String(field)}:change`, {
+        this.events.emit('input:change', {
             field,
             value
         });
@@ -47,6 +47,5 @@ export class Form<T> extends View<IFormState> {
         super.render({valid, errors});
         Object.assign(this, inputs);
         return this.container;
-
     }
 }

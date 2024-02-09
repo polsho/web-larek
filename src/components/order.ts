@@ -1,10 +1,10 @@
 import { Form } from "./common/form";
-import { IOrder } from "../types";
+import { IOrderForm, IFormState } from "../types";
 import { IEvents } from "./base/events";
 import { ensureAllElements } from "../utils/utils";
 
 
-export class Order extends Form<Pick<IOrder, 'payment' | 'address'>> {
+export class Order extends Form<Pick<IOrderForm, 'payment' | 'address'>> {
     protected _methodButtons: HTMLButtonElement[];
 
     constructor(container: HTMLFormElement, events: IEvents) {
@@ -21,22 +21,22 @@ export class Order extends Form<Pick<IOrder, 'payment' | 'address'>> {
             
     }
 
-    selectPayment(button: HTMLButtonElement) {
-        this.resetPayment();
-        button.classList.add('button_alt-active');
-    }
-
     resetPayment() {
         this._methodButtons.forEach((btn) => {
             btn.classList.remove('button_alt-active')
         })
     }
 
+    selectPayment(button: HTMLButtonElement) {
+        this.resetPayment();
+        button.classList.add('button_alt-active');
+    }
+
     set address(value: string) {
         (this.container.elements.namedItem('address') as HTMLInputElement).value = value;
     }
 
-    render(state: Pick<IOrder, 'payment' | 'address'> & IFormState) {
+    render(state: Pick<IOrderForm, 'payment' | 'address'> & IFormState) {
         this.resetPayment();
         return super.render(state);
     }

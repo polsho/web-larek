@@ -56,11 +56,6 @@ events.on('card:select', (item: ProductItem) => {
     appData.setPreview(item);
 });
 
-events.on('product:order', (item: ProductItem) => {          
-    appData.addToBasket(item);
-    page.counter = appData.basket.length;
-});
-
 events.on('preview:show', (item: ProductItem) => {
     const showItem = (item: ProductItem) => {
         const card = new Card(cloneTemplate(cardPreviewTemplate), {
@@ -80,19 +75,24 @@ events.on('preview:show', (item: ProductItem) => {
             })
         });
     };
-
+    
     if (item) {
         api.getProductInfo(item.id)
-            .then((result) => {
-                item.description = result.description;
-                showItem(item);
-            })
-            .catch((err) => {
-                console.error(err);
-            })
+        .then((result) => {
+            item.description = result.description;
+            showItem(item);
+        })
+        .catch((err) => {
+            console.error(err);
+        })
     } else {
         modal.close();
     }
+});
+
+events.on('product:order', (item: ProductItem) => {          
+    appData.addToBasket(item);
+    page.counter = appData.basket.length;
 });
 
 events.on('basket:open', () => {
@@ -111,12 +111,7 @@ events.on('basket:open', () => {
     });
     basket.total = appData.getTotal();
     modal.render({
-        content: createElement<HTMLElement>('div', {}, [
-            // tabs.render({
-            //     selected: 'closed'
-            // }),
-            basket.render()
-        ])
+        content: basket.render()
     });
 });
 
@@ -133,12 +128,8 @@ events.on('formErrors:change', ({payment, address, email, phone}: Partial<IOrder
     contacts.errors = Object.values({email, phone}).filter(i => !!i).join('; ');
 });
 
-events.on(/^order\..*:change/, (data: { field: keyof IOrderForm, value: string }) => {
-    appData.setOrderField(data.field, data.value, false);
-});
-
-events.on(/^contacts\..*:change/, (data: { field: keyof IOrderForm, value: string }) => {
-    appData.setOrderField(data.field, data.value, true);
+events.on('input:change', (data: { field: keyof IOrderForm, value: string }) => {
+    appData.setOrderField(data.field, data.value);
 });
 
 events.on('order:open', () => {
@@ -174,6 +165,7 @@ events.on('contacts:submit', () => {
                 onClick: () => {
                     modal.close();
                     appData.clearBasket();
+                    appData.clearOrder();
                     page.counter = 0;
                 }
             });
@@ -203,7 +195,6 @@ api.getProductList()
 .then((data) => {
     appData.setCatalog(data);
 })
-// .then(appData.setCatalog.bind(appData))
 .catch(err => {
     console.error(err);
 });
