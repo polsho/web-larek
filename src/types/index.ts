@@ -1,4 +1,9 @@
-export type ProductCategory = 'софт-скил' | 'хард-скил' | 'кнопка' | 'дополнительное' | 'другое';
+export type ProductCategory =
+	| 'софт-скил'
+	| 'хард-скил'
+	| 'кнопка'
+	| 'дополнительное'
+	| 'другое';
 
 export type CategoryClasses = Record<ProductCategory, string>;
 
@@ -17,15 +22,15 @@ export interface ICardActions {
 }
 
 export interface IWebLarekApi {
-    getProductList: () => Promise<IProduct[]>;
-    getProductInfo: (id: string) => Promise<IProduct>;
+	getProductList: () => Promise<IProduct[]>;
+	getProductInfo: (id: string) => Promise<IProduct>;
 	orderProducts: (order: IOrder) => Promise<IOrderResult>;
 }
 
 export interface IPage {
 	catalog: HTMLElement[];
-    locked: boolean;
-} 
+	locked: boolean;
+}
 
 export interface IModalView {
 	content: HTMLElement;
@@ -33,12 +38,12 @@ export interface IModalView {
 
 export interface IBasketView {
 	items: HTMLElement[];
-    total: number;   
+	total: number;
 }
 
 export interface IFormState {
-    valid: boolean;
-    errors: string[];
+	valid: boolean;
+	errors: string[];
 }
 
 export type FormErrors = Partial<Record<keyof IOrderForm, string>>;
@@ -61,5 +66,5 @@ export interface IOrderResult {
 }
 
 export interface ISuccess {
-    total: number;
+	total: number;
 }
