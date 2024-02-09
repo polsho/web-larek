@@ -56,8 +56,15 @@ export class AppData {
     }
 
     clearOrder() {
-        this.order.items = [];
-        
+        Object.keys(this.order).forEach((key) => {
+		if (typeof key === 'number') {
+			this.order[key] = 0;
+		} else if (Array.isArray(key)) {
+			this.order[key] = [];
+		} else {
+			this.order[key] = '';
+		}
+	})
     }
 
     getTotal():number {
