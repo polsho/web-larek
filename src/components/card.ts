@@ -61,10 +61,17 @@ export class Card extends View<IProduct> {
 		this.setText(this._index, value);
 	}
 
-	render(data?: Partial<IProduct>): HTMLElement {
+	setDeleteButton() {
+		this.setText(this._button, 'Удалить из корзины');
+	}	
+
+	render(data?: Partial<IProduct>, isInBasket?: boolean): HTMLElement {
 		Object.assign(this as object, data ?? {});
 		if (!data.price) {
 			this.setDisabled(this._button, true);
+		}
+		if (isInBasket) {
+			this.setDeleteButton();
 		}
 		return this.container;
 	}

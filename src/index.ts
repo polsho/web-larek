@@ -54,11 +54,17 @@ events.on('card:select', (item: ProductItem) => {
 });
 
 events.on('preview:show', (item: ProductItem) => {
+	const isInBasket:boolean = !!appData.basket.find(i => i.id === appData.preview);
 	const showItem = (item: ProductItem) => {
 		const card = new Card(cloneTemplate(cardPreviewTemplate), {
 			onClick: () => {
-				events.emit('product:order', item);
-				modal.close();
+				if (!isInBasket) {
+					events.emit('product:order', item);
+					modal.close();
+				}
+				else {
+					events.emit('card:delete', item);
+				}
 			},
 		});
 		modal.render({
@@ -69,20 +75,12 @@ events.on('preview:show', (item: ProductItem) => {
 				price: item.price,
 				category: item.category,
 				id: item.id,
-			}),
+			}, isInBasket),
 		});
 	};
 
 	if (item) {
-		api
-			.getProductInfo(item.id)
-			.then((result) => {
-				item.description = result.description;
-				showItem(item);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		showItem(appData.catalog.find(i => i.id === appData.preview));
 	} else {
 		modal.close();
 	}
@@ -104,7 +102,7 @@ events.on('basket:open', () => {
 			title: item.title,
 			price: item.price,
 			id: item.id,
-		});
+		}, false);
 	});
 	basket.total = appData.getTotal();
 	modal.render({
